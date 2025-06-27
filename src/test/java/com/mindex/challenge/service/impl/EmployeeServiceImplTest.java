@@ -1,7 +1,6 @@
 package com.mindex.challenge.service.impl;
 
 import com.mindex.challenge.data.Employee;
-import com.mindex.challenge.service.EmployeeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +24,6 @@ public class EmployeeServiceImplTest {
     private String employeeUrl;
     private String employeeIdUrl;
 
-    @Autowired
-    private EmployeeService employeeService;
-
     @LocalServerPort
     private int port;
 
@@ -50,13 +46,14 @@ public class EmployeeServiceImplTest {
 
         // Create checks
         Employee createdEmployee = restTemplate.postForEntity(employeeUrl, testEmployee, Employee.class).getBody();
-
+        assertNotNull(createdEmployee);
         assertNotNull(createdEmployee.getEmployeeId());
         assertEmployeeEquivalence(testEmployee, createdEmployee);
 
 
         // Read checks
         Employee readEmployee = restTemplate.getForEntity(employeeIdUrl, Employee.class, createdEmployee.getEmployeeId()).getBody();
+        assertNotNull(readEmployee);
         assertEquals(createdEmployee.getEmployeeId(), readEmployee.getEmployeeId());
         assertEmployeeEquivalence(createdEmployee, readEmployee);
 
